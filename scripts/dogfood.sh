@@ -25,5 +25,10 @@ fi
 
 PluginPath="${OBS_PLUG_DOGFOOD_VAULT}/.obsidian/plugins/${pluginName}/"
 echo copy to ${PluginPath}
+
+
+if [ -d "$PluginPath" ]; then
+  rm -r "$PluginPath"
+fi
 cp -r ./build $PluginPath
 
