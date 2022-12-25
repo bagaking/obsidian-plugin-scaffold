@@ -3,9 +3,9 @@ import {ISetting} from "../../type";
 
 import {ICON_NAME} from "../icons";
 import {IConf} from "../setting";
-import {BKPlugin, displayErrorNotice} from "../../framework";
+import {BKPlugin} from "../../framework";
 import {WorkspaceLeaf} from "obsidian";
-import {LOG} from "../../utils";
+import {LOG, displayErrorNotice} from "../../utils";
 
 export const ExamplePanelDescriber: IBKPanelDescriber = {
 	viewType: "example-controller",

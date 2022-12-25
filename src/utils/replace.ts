@@ -4,9 +4,10 @@ import path from "path";
 import {App, DataAdapter, TFile, TFolder, Vault} from "obsidian";
 
 import { isUrl, downloadImage, fileExtByContent, pathJoin} from "./staff";
-import {linkHashes} from "./linksHash";
+import {linkHashes} from "./algocontainers";
 import {renderTemplate} from "./template";
 import {cleanFileName} from "./filename";
+import {ensureFolderExists} from "./obsutils";
 
 export const FILENAME_TEMPLATE = "media_asset";
 export const MAX_FILENAME_INDEX = 1000;
@@ -120,6 +121,7 @@ export function imageTagProcessor(app: App, mediaDir: string, namePattern: strin
 					);
 
 					if (needWrite && fileName) {
+						await ensureFolderExists(app.vault, mediaDir);
 						await app.vault.createBinary(fileName, fileData);
 						console.log(`binary created ${fileName}`);
 					}

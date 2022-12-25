@@ -1,6 +1,6 @@
 import {WorkspaceLeaf} from "obsidian";
 
-import {BKPlugin, buildPluginStaticResourceSrc} from "../framework";
+import {BKPlugin} from "../framework";
 import {ISetting} from "../type";
 
 
@@ -10,6 +10,7 @@ import RegisterIcons from "./icons";
 
 import {registerBecomingCmd} from "./cmds";
 import ExamplePanel, {ExamplePanelDescriber} from "./panel";
+import {buildPluginStaticResourceSrc} from "../utils";
 
 
 export default class BKBecomingPlug extends BKPlugin {

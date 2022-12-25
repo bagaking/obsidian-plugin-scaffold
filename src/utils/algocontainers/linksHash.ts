@@ -1,3 +1,6 @@
+import {LOG} from "../log";
+const logger = LOG("bk.links_hash");
+
 import { XXHash32 } from "ts-xxhash";
 
 class LinkHashes {

@@ -1,8 +1,7 @@
 import {PluginSettingTab, Setting} from "obsidian";
 import {ISetting} from "../type";
 import {BKPlugin} from "./bkplugin";
-import {displayErrorNotice} from "./obsutils";
-import {ILogger, LOG} from "../utils/log";
+import {ILogger, LOG, displayErrorNotice} from "../utils";
 
 export abstract class BKSettingTab<TConf> extends PluginSettingTab implements ISetting<TConf> {
 	name: string;

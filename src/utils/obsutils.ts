@@ -1,6 +1,7 @@
 import {Editor, MarkdownView, Notice, Plugin_2, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
+import {LOG} from "./log";
+import {pathJoin} from "./staff";
 
-import {LOG, pathJoin} from "../utils";
 
 const logger = LOG("bk.obsutils");
 

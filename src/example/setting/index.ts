@@ -1,4 +1,5 @@
-import {BKPlugin, BKSettingTab, displayErrorNotice} from "../../framework";
+import {BKPlugin, BKSettingTab} from "../../framework";
+import {displayErrorNotice} from "../../utils";
 
 const Name = "example-setting"
 

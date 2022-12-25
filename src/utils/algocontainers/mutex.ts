@@ -1,7 +1,7 @@
-import {LOG} from "./log";
-import * as util from "util";
-
+import {LOG} from "../log";
 const logger = LOG("bk.mutex");
+
+import * as util from "util";
 
 export async function waitFor(ms: number = 10): Promise<void> {
 	return new Promise(resolve => {

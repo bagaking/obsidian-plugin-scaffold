@@ -1,6 +1,7 @@
 import {Plugin} from "obsidian";
-import {easyMutex, LOG} from "../utils";
+import {LOG} from "../utils";
 import {PanelRegister} from "./panel";
+import {easyMutex} from "../utils/algocontainers";
 
 export interface IPluginDocLoadResult {
 	exist: boolean,

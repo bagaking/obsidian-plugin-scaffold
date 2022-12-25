@@ -1,3 +1,6 @@
+import {LOG} from "../log";
+const logger = LOG("bk.lru_tester");
+
 export class LRUTester {
   size: number;
   data: string[];

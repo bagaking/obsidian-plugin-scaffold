@@ -1,6 +1,5 @@
 import {LOG} from "../utils";
 import {App, ItemView, Plugin, WorkspaceLeaf} from "obsidian";
-import {displayErrorNotice} from "./obsutils";
 
 const logger = LOG("bk.framework.panel");
 
