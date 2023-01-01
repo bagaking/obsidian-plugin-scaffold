@@ -1,7 +1,8 @@
-import { ISetting } from "../../type";
-import {BKPlugin} from "../../framework";
+import { ISetting } from "../../../type";
+import {BKPlugin} from "../../../framework";
+import {LOG, findActiveEditorOfActiveFile} from "../../../utils";
+
 import {IConf} from "../setting";
-import {LOG, findActiveEditorOfActiveFile} from "../../utils";
 
 
 const logger = LOG("example-cmd");

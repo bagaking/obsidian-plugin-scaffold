@@ -7,11 +7,11 @@ package-lock.json
 .DS_Store
 
 # npm
-node_modules
+node_modules/
 
 # Don't include the compiled main.js file in the repo.
 # They should be uploaded to GitHub releases instead.
-build
+build/
 
 # Exclude sourcemaps
 *.map

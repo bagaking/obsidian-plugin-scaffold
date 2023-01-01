@@ -1,11 +1,12 @@
-import {BKPanel, IBKPanelDescriber} from "../../framework/panel";
-import {ISetting} from "../../type";
+import {WorkspaceLeaf} from "obsidian";
+import {ISetting} from "../../../type";
+import {BKPlugin} from "../../../framework";
+import {BKPanel, IBKPanelDescriber} from "../../../framework/panel";
+import {LOG, displayErrorNotice} from "../../../utils";
 
 import {ICON_NAME} from "../icons";
 import {IConf} from "../setting";
-import {BKPlugin} from "../../framework";
-import {WorkspaceLeaf} from "obsidian";
-import {LOG, displayErrorNotice} from "../../utils";
+import { renderDemoRadar } from "./view/radar.jsx"
 
 export const ExamplePanelDescriber: IBKPanelDescriber = {
 	viewType: "example-controller",
@@ -30,6 +31,8 @@ export default class ExamplePanel extends BKPanel {
 	async onEnable() {
 		this.logger.info("example opened");
 		await displayErrorNotice("example opened")
+
+		renderDemoRadar(this.containerEl.children[1].createDiv({attr: {"style":"width: 100%; height: 100%"}}))
 	}
 
 	async onUpdate(): Promise<any> {

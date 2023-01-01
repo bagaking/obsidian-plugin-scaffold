@@ -1,3 +1,3 @@
-import BKBecomingPlug from "./example";
+import StandardPlug from "./example/standard";
 
-export default BKBecomingPlug;
+export default StandardPlug;
