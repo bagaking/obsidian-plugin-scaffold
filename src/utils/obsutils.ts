@@ -1,3 +1,4 @@
+import path from "path";
 import {Editor, MarkdownView, Notice, Plugin_2, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
 import {LOG} from "./log";
 import {pathJoin} from "./staff";
@@ -56,6 +57,11 @@ export function getFileByPath(vault: Vault, path: string): TFile | undefined {
 }
 
 export function getFileByName(vault: Vault, name: string): TFile | undefined {
+    const files = vault.getFiles();
+    return files.find(f => f.name.substring(0, f.name.length - (path.extname(f.name)?.length || 0)).trim().toLowerCase() == name.trim().toLowerCase()) || getFileByExactName(vault, name)
+}
+
+export function getFileByExactName(vault: Vault, name: string): TFile | undefined {
     const files = vault.getFiles();
     return files.find(f => f.name == name);
 }
