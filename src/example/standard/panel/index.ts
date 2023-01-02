@@ -44,7 +44,7 @@ export default class ExamplePanel extends BKPanel {
 			sold: 10,
 			fill: "p(a)https://gw.alipayobjects.com/zos/antfincdn/Ye2DqRx%2627/pie-wenli2.png"
 		} ];
-		RenderPie(createRenderContainer(this.containerEl.children[0].createDiv(), "kh::pie"), data, {
+		RenderPie(createRenderContainer(this.containerEl.children[0].createDiv(), {label: "kh::pie"}), data, {
 			value: "sold", label: "sex"
 		})
 	}

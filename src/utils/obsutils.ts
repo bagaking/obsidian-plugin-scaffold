@@ -56,6 +56,7 @@ export function getFileByPath(vault: Vault, path: string): TFile | undefined {
     return files.find(f => f.path == path);
 }
 
+
 export function getFileByName(vault: Vault, name: string): TFile | undefined {
     const files = vault.getFiles();
     return files.find(f => f.name.substring(0, f.name.length - (path.extname(f.name)?.length || 0)).trim().toLowerCase() == name.trim().toLowerCase()) || getFileByExactName(vault, name)
@@ -100,21 +101,24 @@ export function buildPluginStaticResourceSrc(plug: Plugin_2, assetPth: string, f
     return forceRefresh ? url : url.slice(0, url.lastIndexOf("?"))
 }
 
-export function createRenderContainer(el: HTMLElement, label?: string) {
+export function createRenderContainer(el: HTMLElement, options?: {
+    label?: string
+    width?: number
+}) {
     const bgColor = "#333333cc"
     const color = "#eeeeee"
     const div = el.createDiv({
         attr: {
-            "style": `width: 99%; height: 99%; margin: 2px; padding: 5px 0px; border: 2px solid ${bgColor}; border-radius: 2px;`
+            "style": `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px;`
         }
     })
-    if (!!label) {
+    if (!!options?.label) {
         div.createDiv({
             attr: {
-                "style": `width: 128px; height: 20; font-size: 12px; padding: 0 0 3px 6px; background-color: ${bgColor}; color: ${color}; border-radius: 0 0 2px 0; position: absolute; left: 4px; top: 4px;`
+                "style": `width: ${128 + (options?.width || 0)}px; height: 20; font-size: 12px; padding: 0 0 3px 6px; background-color: ${bgColor}; color: ${color}; border-radius: 0 0 2px 0; position: absolute; left: 4px; top: 4px;`
             },
-            text: label,
-            title: `code block of ${label}`
+            text: options.label,
+            title: `code block of ${options.label}`
         })
         return div.createDiv({attr: {"style": "width: 100%; height: 100%; margin: 20px 0px 5px 0px;"}})
     }
