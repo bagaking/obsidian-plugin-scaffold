@@ -1,4 +1,4 @@
-import {Plugin} from "obsidian";
+import {Plugin, Vault } from "obsidian";
 import {LOG} from "../utils";
 import {PanelRegister} from "./panel";
 import {easyMutex} from "../utils/algocontainers";
