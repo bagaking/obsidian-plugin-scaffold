@@ -17,6 +17,7 @@ const MenuComponent = ({data, option}) => {
     />
 }
 
+// @see: https://marcus.se.net/obsidian-plugin-docs/getting-started/react
 export function RenderMenu(el, data, option) {
     data = data || []
     const root = createRoot(el);

@@ -1,6 +1,4 @@
 import {MarkdownPostProcessorContext, WorkspaceLeaf} from "obsidian";
-import YAML from 'yaml'
-import path from 'path'
 
 
 import {BKPlugin} from "../../framework";
@@ -10,12 +8,14 @@ import {ISetting} from "../../type";
 import SettingTab, {IConf} from "./setting";
 import RegisterIcons from "./icons";
 
-
 import {registerBecomingCmd} from "./cmds";
 import ExamplePanel, {ExamplePanelDescriber} from "./panel";
 import {buildPluginStaticResourceSrc, createRenderContainer, getFileByName, showFile} from "../../utils";
 import {RenderRadar} from "./panel/view/radar";
-import {RenderMenu} from "./panel/view/menu";
+import MenuFn from "./codeblock/menu";
+import RadarFn from "./codeblock/radar";
+import EmbedFn from "./codeblock/embed";
+import TodoFn from "./codeblock/todo";
 
 
 export default class StandardPlug extends BKPlugin {
@@ -44,8 +44,16 @@ export default class StandardPlug extends BKPlugin {
             await this.mainLifeCycle(); // execute right now
         }));
 
-
+        // @see: https://marcus.se.net/obsidian-plugin-docs/editor/markdown-post-processing
         this.registerMarkdownPostProcessor((element, context) => {
+            const cb = element.querySelectorAll("code");
+
+            for (let index = 0; index < cb.length; index++) {
+                const codeblock = cb.item(index);
+                const text = codeblock.innerText.trim();
+                console.log("cb text", index, text)
+            }
+
             const codeblocks = element.querySelectorAll(".view-header");
             const src = buildPluginStaticResourceSrc(this, "statics/1.png")
             codeblocks.item(0)?.createEl("img", {
@@ -58,40 +66,12 @@ export default class StandardPlug extends BKPlugin {
             // console.log("!! codeblocks", src, element, this.app.vault, this.app.workspace)
         });
 
-        this.registerMarkdownCodeBlockProcessor("kh_radar", (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-            const yml = YAML.parse(source)
-            const data: any = []
-            const option: any = {}
-            for (let name in yml) {
-                const value = yml[name]
-                if (name.startsWith("_")) {
-                    option[name.substring(1)] = value
-                    continue
-                }
-                if (typeof value !== 'number' || !isFinite(value)) continue
-                data.push({name, value})
-            }
 
-            RenderRadar(createRenderContainer(el, {label: "kh::radar"}), data, option)
-        })
 
-        this.registerMarkdownCodeBlockProcessor("kh_menu", (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-            const yml = YAML.parse(source)
-            const sourceDir = path.dirname(ctx.sourcePath)
-            let dirName: string = yml?.prefix || sourceDir
-            dirName = dirName.replace("$SOURCE_DIR", sourceDir)
-
-            const div = createRenderContainer(el, {label: `kh::menu - ${dirName}`, width: dirName.length * 6})
-            const data: any[] = []
-            const files = this.app.vault.getFiles().filter(f => f.path.startsWith(dirName)).sort((a, b) => a.path.localeCompare(b.path));
-
-            files.forEach(f => data.push({
-                    label: f.basename,
-                    jump: () => showFile(this.app.workspace, f, true)
-                })
-            )
-            RenderMenu(div, data)
-        })
+        this.registerMarkdownCodeBlockProcessor(...RadarFn())
+        this.registerMarkdownCodeBlockProcessor(...EmbedFn(this.app))
+        this.registerMarkdownCodeBlockProcessor(...MenuFn(this.app.vault))
+        this.registerMarkdownCodeBlockProcessor(...TodoFn())
 
         // this.registerMarkdownCodeBlockProcessor("kh_ref", (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         //     const yml = YAML.parse(source)

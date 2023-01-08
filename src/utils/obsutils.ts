@@ -26,6 +26,15 @@ export async function displayErrorNotice(error: Error | string, file?: TFile) {
     console.error(`BKTimeline [Error]: ${error}`);
 }
 
+
+export async function renderErrorNotice(el: HTMLElement, text: string, cls?: string[]) {
+    el.createEl("div", {
+        text: text, cls: cls, attr: {
+            style: "width: 100%; text-align: center; font-size: 14px; background: #ffffaa; border-radius: 3px; padding: 6px;"
+        }
+    });
+}
+
 export function editorJumpTo(editor: Editor, rowInd: number, selectLine?: boolean) {
     // @ts-ignore
     if (!editor || rowInd === undefined) {
@@ -104,23 +113,48 @@ export function buildPluginStaticResourceSrc(plug: Plugin_2, assetPth: string, f
 export function createRenderContainer(el: HTMLElement, options?: {
     label?: string
     width?: number
+    style?: string
+    text?: string
+    link?: string
+    contentStyle?: string
 }) {
     const bgColor = "#333333cc"
     const color = "#eeeeee"
     const div = el.createDiv({
         attr: {
-            "style": `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px;`
+            "style": `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px; ${options?.style}`
         }
     })
     if (!!options?.label) {
-        div.createDiv({
+        const title = div.createDiv({
             attr: {
-                "style": `width: ${128 + (options?.width || 0)}px; height: 20; font-size: 12px; padding: 0 0 3px 6px; background-color: ${bgColor}; color: ${color}; border-radius: 0 0 2px 0; position: absolute; left: 4px; top: 4px;`
+                "style": `width: ${128 + (options?.width || 0)}px; height: 20; font-size: 12px; padding: 0 0 3px 6px;\
+                background-color: ${bgColor}; border-radius: 0 0 2px 0; position: relative; left: -5px; top: -5px; ${options?.style}`
             },
-            text: options.label,
-            title: `code block of ${options.label}`
+            title: `code block of ${options.label}`,
         })
-        return div.createDiv({attr: {"style": "width: 100%; height: 100%; margin: 20px 0px 5px 0px;"}})
+
+        const linkOption: DomElementInfo = {
+            attr: {"style": `width: 100%; height: 100%; color: ${color};`},
+            text: options.label,
+        }
+        title.createSpan(linkOption)
+
+        if (!!options.text) {
+            linkOption.text = (options.text ? (" - " + options.text) : "")
+            if (!!options?.link && !!linkOption.attr) {
+                linkOption.attr.style = linkOption.attr.style + ";font-weight: bold; cursor:pointer;"
+                linkOption.attr.onclick = `window.location.href='${options?.link}'`
+            }
+            title.createSpan(linkOption)
+        }
+
+        return div.createDiv({
+            attr: {
+                "style":
+                    `width: 100%; height: 100%; margin: 10px 0px 5px 0px; ${options?.contentStyle}`
+            }
+        })
     }
 
     return div
