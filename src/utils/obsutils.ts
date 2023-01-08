@@ -117,19 +117,16 @@ export function createRenderContainer(el: HTMLElement, options?: {
     text?: string
     link?: string
     contentStyle?: string
-}) {
+}): HTMLDivElement {
     const bgColor = "#333333cc"
     const color = "#eeeeee"
-    const div = el.createDiv({
-        attr: {
-            "style": `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px; ${options?.style}`
-        }
-    })
+
+    const div = el.createDiv({ attr: { style: `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px; ${options?.style ?? ""}`} })
     if (!!options?.label) {
         const title = div.createDiv({
             attr: {
                 "style": `width: ${128 + (options?.width || 0)}px; height: 20; font-size: 12px; padding: 0 0 3px 6px;\
-                background-color: ${bgColor}; border-radius: 0 0 2px 0; position: relative; left: -5px; top: -5px; ${options?.style}`
+                background-color: ${bgColor}; border-radius: 0 0 2px 0; position: relative; left: -5px; top: -5px; ${options?.style ?? ""}`
             },
             title: `code block of ${options.label}`,
         })
@@ -144,7 +141,7 @@ export function createRenderContainer(el: HTMLElement, options?: {
             linkOption.text = (options.text ? (" - " + options.text) : "")
             if (!!options?.link && !!linkOption.attr) {
                 linkOption.attr.style = linkOption.attr.style + ";font-weight: bold; cursor:pointer;"
-                linkOption.attr.onclick = `window.location.href='${options?.link}'`
+                linkOption.attr.onclick = `window.location.href='${options?.link ?? "#"}'`
             }
             title.createSpan(linkOption)
         }

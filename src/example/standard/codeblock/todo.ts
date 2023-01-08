@@ -28,7 +28,6 @@ export default function TodoFn(): [string, (source: string, el: HTMLElement, ctx
             }
 
             if (!!yml.name) {
-
                 option.text = yml.name
                 option.width = yml.name.length * 6
             }
