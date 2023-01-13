@@ -110,23 +110,62 @@ export function buildPluginStaticResourceSrc(plug: Plugin_2, assetPth: string, f
     return forceRefresh ? url : url.slice(0, url.lastIndexOf("?"))
 }
 
-export function createRenderContainer(el: HTMLElement, options?: {
+
+interface IStyleSet {
+    [key: string]: string
+}
+
+export interface IKHRenderContianerOption {
     label?: string
     width?: number
     style?: string
     text?: string
     link?: string
     contentStyle?: string
-}): HTMLDivElement {
+    childrenStyle?: IStyleSet
+}
+
+function flattenStyle(map: { [key: string]: string }): string {
+    let styleStr = ""
+    for (let key in map) {
+        styleStr += `${key}: ${map[key]};`
+    }
+    return styleStr
+}
+
+export function createRenderContainerOptionByConf(
+    conf: {
+        style?: IStyleSet,
+        childrenStyle?: { [key: string]: IStyleSet }
+    }
+): IKHRenderContianerOption {
+    let opt: IKHRenderContianerOption = {}
+    if (!!conf?.style) {
+        opt.style = flattenStyle(conf.style)
+    }
+    if (!!conf?.childrenStyle) {
+        let styleSet: any = {}
+        for (let childrenKey in conf.childrenStyle) {
+            styleSet[childrenKey] = flattenStyle(conf.childrenStyle[childrenKey])
+        }
+        opt.childrenStyle = styleSet
+    }
+
+    return opt
+}
+
+export function createRenderContainer(el: HTMLElement, options?: IKHRenderContianerOption): HTMLDivElement {
     const bgColor = "#333333cc"
     const color = "#eeeeee"
 
-    const div = el.createDiv({ attr: { style: `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px; ${options?.style ?? ""}`} })
+    const div = el.createDiv({attr: {style: `width: 99%; height: 99%; margin: 2px; padding: 5px 5px; border: 2px solid ${bgColor}; border-radius: 2px; ${options?.style ?? ""}`}})
+    let ret = div
+
     if (!!options?.label) {
         const title = div.createDiv({
             attr: {
                 "style": `width: ${128 + (options?.width || 0)}px; height: 20; font-size: 12px; padding: 0 0 3px 6px;\
-                background-color: ${bgColor}; border-radius: 0 0 2px 0; position: relative; left: -5px; top: -5px; ${options?.style ?? ""}`
+                background-color: ${bgColor}; border-radius: 0 0 2px 0; position: relative; left: -5px; top: -5px;`
             },
             title: `code block of ${options.label}`,
         })
@@ -146,13 +185,23 @@ export function createRenderContainer(el: HTMLElement, options?: {
             title.createSpan(linkOption)
         }
 
-        return div.createDiv({
+
+        ret = div.createDiv({
             attr: {
-                "style":
-                    `width: 100%; height: 100%; margin: 10px 0px 5px 0px; ${options?.contentStyle}`
+                "style": `width: 100%; height: 100%; margin: 10px 0px 5px 0px; ${options?.contentStyle}`
             }
         })
     }
 
-    return div
+    if (!!options?.childrenStyle) {
+        let cls = "kh-" + Math.round(Math.random() * 999999999)
+        ret.setAttr("class", cls)
+        let styleStr = "\n"
+        for (let childKey in options.childrenStyle) {
+            styleStr += `.${cls} ${childKey} { ${options.childrenStyle[childKey]} }\n`
+        }
+        ret.createEl("style").setText(styleStr)
+    }
+
+    return ret
 }

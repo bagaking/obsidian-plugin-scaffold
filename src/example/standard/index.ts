@@ -63,7 +63,6 @@ export default class StandardPlug extends BKPlugin {
             // @ts-ignore
             window["vault"] = this.app.vault
 
-            // console.log("!! codeblocks", src, element, this.app.vault, this.app.workspace)
         });
 
 

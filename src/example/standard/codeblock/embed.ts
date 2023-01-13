@@ -2,7 +2,7 @@ import path from 'path'
 import YAML from 'yaml'
 import {MarkdownPostProcessorContext, Vault, MarkdownRenderer, App} from "obsidian";
 import {RenderRadar} from "../panel/view/radar";
-import {createRenderContainer, getFileByName, renderErrorNotice, showFile} from "../../../utils";
+import {IKHRenderContianerOption, createRenderContainerOptionByConf, createRenderContainer, getFileByName, renderErrorNotice, showFile} from "../../../utils";
 
 
 export default function EmbedFn(app: App): [string, (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>] {
@@ -24,7 +24,8 @@ export default function EmbedFn(app: App): [string, (source: string, el: HTMLEle
             }
 
             const uri = `obsidian://open?vault=${app.vault.getName()}&file=${fileName}.md`
-            const option: any = {
+            const option: IKHRenderContianerOption = {
+                ... createRenderContainerOptionByConf(yml),
                 label: "kh::embed",
                 text: fileName,
                 link: uri,
