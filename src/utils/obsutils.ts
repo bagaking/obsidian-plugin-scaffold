@@ -1,5 +1,8 @@
 import path from "path";
-import {Editor, MarkdownView, Notice, Plugin_2, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
+
+import YAML from 'yaml'
+
+import {App, Editor, MarkdownView, Notice, Plugin_2, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
 import {LOG} from "./log";
 import {pathJoin} from "./staff";
 
@@ -65,11 +68,13 @@ export function getFileByPath(vault: Vault, path: string): TFile | undefined {
     return files.find(f => f.path == path);
 }
 
-
+// getFileByName
+// get the name matched file in given vault
 export function getFileByName(vault: Vault, name: string): TFile | undefined {
     const files = vault.getFiles();
     return files.find(f => f.name.substring(0, f.name.length - (path.extname(f.name)?.length || 0)).trim().toLowerCase() == name.trim().toLowerCase()) || getFileByExactName(vault, name)
 }
+
 
 export function getFileByExactName(vault: Vault, name: string): TFile | undefined {
     const files = vault.getFiles();
@@ -131,6 +136,44 @@ function flattenStyle(map: { [key: string]: string }): string {
         styleStr += `${key}: ${map[key]};`
     }
     return styleStr
+}
+
+export async function readNoteAll(filename: string, obsApp?: App): Promise<string | undefined> {
+    obsApp = obsApp || app // try set global app
+    const name = filename.trim()
+
+    const matchingFile = obsApp.metadataCache.getFirstLinkpathDest(name, '');
+    // console.log("readNoteAll", name, matchingFile)
+    if (!matchingFile || matchingFile.extension !== "md") {
+        displayErrorNotice("warning: cannot found config file: " + name);
+        return
+    }
+    return await obsApp.vault.cachedRead(matchingFile);
+}
+
+export async function readYmlConf(setting: string, obsApp?: App): Promise<any> {
+    const yml = YAML.parse(setting)
+    let appends: any = {}
+    for (let k in yml) {
+        if (k.toLowerCase().trim() === "<") {
+            const fileName = yml[k]
+            const fileContents = await readNoteAll(fileName, obsApp)
+            // console.log(`parse '<' of ${fileName}`, fileContents, appends)
+            if (fileContents === undefined) {
+                displayErrorNotice(`warning: cannot found config file: ${fileName}`);
+                continue
+            }
+            appends = {
+                ...appends,
+                ...await readYmlConf(fileContents, obsApp)
+            }
+        }
+    }
+    // console.log("readYmlConf", setting, yml, appends)
+    return {
+        ...yml,
+        ...appends,
+    }
 }
 
 export function createRenderContainerOptionByConf(

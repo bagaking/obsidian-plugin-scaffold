@@ -1,8 +1,8 @@
 import path from 'path'
-import YAML from 'yaml'
 import {MarkdownPostProcessorContext, Vault, MarkdownRenderer, App} from "obsidian";
 import {RenderRadar} from "../panel/view/radar";
 import {
+    readYmlConf,
     createRenderContainerOptionByConf,
     createRenderContainer,
     getFileByName,
@@ -28,7 +28,7 @@ export default function TodoFn(): [string, (source: string, el: HTMLElement, ctx
                 content += l + "\n"
             }
 
-            const yml = YAML.parse(setting)
+            let yml = await readYmlConf(setting)
             const option = createRenderContainerOptionByConf(yml)
             option.label = "kh::todo"
             if (!!yml?.name) {

@@ -1,15 +1,15 @@
 import path from 'path'
-import YAML from 'yaml'
 import {MarkdownPostProcessorContext, Vault, MarkdownRenderer, App} from "obsidian";
 import {RenderRadar} from "../panel/view/radar";
-import {IKHRenderContianerOption, createRenderContainerOptionByConf, createRenderContainer, getFileByName, renderErrorNotice, showFile} from "../../../utils";
+import {readYmlConf, IKHRenderContianerOption, createRenderContainerOptionByConf, createRenderContainer, getFileByName, renderErrorNotice, showFile} from "../../../utils";
 
 
 export default function EmbedFn(app: App): [string, (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>] {
     return [
         "kh_embed",
         async function (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) {
-            const yml = YAML.parse(source)
+            let yml = await readYmlConf(source)
+
             const fileName = yml?.note;
             if (!fileName) {
                 renderErrorNotice(el, "note should be set");
