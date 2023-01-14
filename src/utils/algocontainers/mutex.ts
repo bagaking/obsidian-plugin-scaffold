@@ -63,8 +63,9 @@ export class easyMutex { // cannot reenter
 			data = await fn();
 		} catch (ex) {
 			return err(ex);
+		} finally {
+			this.state = false; // unlock
 		}
-		this.state = false; // unlock
 		if (this.verbose) {
 			logger.info(`guard execute success, logID=${logID}`);
 		}
