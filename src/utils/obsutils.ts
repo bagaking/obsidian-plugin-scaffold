@@ -2,12 +2,18 @@ import path from "path";
 
 import YAML from 'yaml'
 
-import {App, Editor, MarkdownView, Notice, Plugin_2, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
+import {App, Editor, MarkdownView, Notice, Plugin, TFile, Vault, Workspace, WorkspaceLeaf} from "obsidian";
 import {LOG} from "./log";
 import {pathJoin} from "./staff";
 
 
 const logger = LOG("bk.obsutils");
+
+declare const app: App | undefined;
+
+function resolveObsidianApp(obsApp?: App): App | undefined {
+    return obsApp || (typeof app !== "undefined" ? app : undefined);
+}
 
 export async function ensureFolderExists(vault: Vault, folderPath: string) {
     try {
@@ -110,7 +116,7 @@ export function issueLeafToMarkdown(leaf: WorkspaceLeaf) {
     }
 }
 
-export function buildPluginStaticResourceSrc(plug: Plugin_2, assetPth: string, forceRefresh: boolean = true) {
+export function buildPluginStaticResourceSrc(plug: Plugin, assetPth: string, forceRefresh: boolean = true) {
     let url = plug.app.vault.adapter.getResourcePath(pathJoin(plug.app.vault.configDir, "plugins", plug.manifest.id, assetPth))
     return forceRefresh ? url : url.slice(0, url.lastIndexOf("?"))
 }
@@ -139,7 +145,11 @@ function flattenStyle(map: { [key: string]: string }): string {
 }
 
 export async function readNoteAll(filename: string, obsApp?: App): Promise<string | undefined> {
-    obsApp = obsApp || app // try set global app
+    obsApp = resolveObsidianApp(obsApp)
+    if (!obsApp) {
+        displayErrorNotice("warning: cannot read config file without Obsidian app: " + filename);
+        return
+    }
     const name = filename.trim()
 
     const matchingFile = obsApp.metadataCache.getFirstLinkpathDest(name, '');
@@ -202,7 +212,7 @@ export async function readYmlFrontMatter(source: string, obsApp?: App): Promise<
     for (; l < lines.length; l++) {
         ret.content += lines[l] + "\n"
     }
-    ret.conf = await readYmlConf(setting)
+    ret.conf = await readYmlConf(setting, obsApp)
     console.log("-- readYmlFrontMatter > setting:`", setting, "`, content:`", ret.content, "`, conf=", ret.conf)
     return ret
 }

@@ -23,7 +23,12 @@ export class PanelRegister {
 			return;
 		}
 
-		await app.workspace.getRightLeaf(true).setViewState({type: viewType});
+		const rightLeaf = app.workspace.getRightLeaf(true);
+		if (!rightLeaf) {
+			logger.err(`cannot open view, no right leaf found for ${viewType}`);
+			return;
+		}
+		await rightLeaf.setViewState({type: viewType});
 	}
 
 	public async focus(app: App, viewType: string) {
