@@ -16,7 +16,11 @@ export default (option = defaultSetting) => {
 		name: 'copy',
 		setup(build) {
 			// needs node version >= 16
-			build.onEnd(() => {
+			build.onEnd((result) => {
+				if (result.errors.length > 0) {
+					return;
+				}
+
 				let destDir = path.dirname(option.dest)
 				if (!fs.existsSync(destDir)){
 					fs.mkdirSync(destDir, { recursive: true });

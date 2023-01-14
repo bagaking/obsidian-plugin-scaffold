@@ -8,6 +8,7 @@
 		"build": "tsc -noEmit -skipLibCheck && node ./scripts/esbuild.config.mjs production",
 		"dogfood": "tsc -noEmit -skipLibCheck && node ./scripts/esbuild.config.mjs dogfood && sh ./scripts/dogfood.sh",
 		"version": "git add manifest.json versions.json",
+		"test": "node --test scripts/*.test.mjs",
 		"lint": "eslint ./src/**/*.ts"
 	},
 	"keywords": [],
