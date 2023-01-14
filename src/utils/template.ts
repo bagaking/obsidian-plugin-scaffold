@@ -28,6 +28,6 @@ export const renderTemplate = (tmpl: string, data: TemplateData) => {
   text = text
     .replace(/{{Anchor}}/gm, cleanFileName(data.anchor))
     .replace(/{{FileName}}/gm, cleanFileName(data.file.basename))
-    .replace(/{{DirName}}/gm, cleanFileName(data.file.parent.name))
+    .replace(/{{DirName}}/gm, cleanFileName(data.file.parent?.name ?? ""))
   return text
 }
