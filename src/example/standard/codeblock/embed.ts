@@ -8,7 +8,7 @@ export default function EmbedFn(app: App): [string, (source: string, el: HTMLEle
     return [
         "kh_embed",
         async function (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) {
-            let yml = await readYmlConf(source)
+            let yml = await readYmlConf(source, app)
 
             const fileName = yml?.note;
             if (!fileName) {
