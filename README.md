@@ -11,14 +11,24 @@ Install dependencies before running local checks:
 npm install
 ```
 
+This repository currently does not track `package-lock.json`; it is ignored by
+the repo. Dependency installation uses `package.json` as the source of truth.
+CI and lockfile reproducibility should be decided as a separate repository
+policy change.
+
 ## Scripts
 
 - `npm test` runs the Node test suite for scaffold helper scripts.
 - `npm run build` type-checks the plugin and writes the Obsidian release
   assets to `build/`.
-- `npm run lint` runs ESLint over the TypeScript source files.
 - `npm run dogfood` type-checks, builds, and copies the `build/` output into
   a local Obsidian vault.
+
+## Known Existing Debt
+
+- `npm run lint` is a baseline visibility check for existing TypeScript lint
+  debt. It currently may fail on pre-existing `src/` issues, so treat it as a
+  debt signal rather than a green local gate.
 
 ## Dogfood In Obsidian
 
