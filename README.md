@@ -13,8 +13,8 @@ npm install
 
 This repository currently does not track `package-lock.json`; it is ignored by
 the repo. Dependency installation uses `package.json` as the source of truth.
-CI and lockfile reproducibility should be decided as a separate repository
-policy change.
+The CI workflow mirrors that policy by using `npm install` instead of
+`npm ci`.
 
 ## Scripts
 
@@ -23,6 +23,20 @@ policy change.
   assets to `build/`.
 - `npm run dogfood` type-checks, builds, and copies the `build/` output into
   a local Obsidian vault.
+
+## Continuous Integration
+
+CI runs the reproducible checks that do not require a local Obsidian vault:
+
+```sh
+npm install
+npm test
+npm run build
+```
+
+`npm run lint` and `npm run dogfood` remain local checks for now. Lint still
+tracks existing baseline debt, and dogfood needs a vault path supplied by the
+operator.
 
 ## Known Existing Debt
 
