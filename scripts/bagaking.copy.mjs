@@ -12,6 +12,7 @@ const defaultSetting = {
 }
 
 export default (option = defaultSetting) => {
+	const copySetting = { ...defaultSetting, ...option };
 	let plugin = {
 		name: 'copy',
 		setup(build) {
@@ -21,16 +22,14 @@ export default (option = defaultSetting) => {
 					return;
 				}
 
-				let destDir = path.dirname(option.dest)
+				let destDir = path.dirname(copySetting.dest)
 				if (!fs.existsSync(destDir)){
 					fs.mkdirSync(destDir, { recursive: true });
 				}
 				fs.cpSync(
-						option.from,
-						option.dest,
-						{
-							...defaultSetting, ...option
-						})
+						copySetting.from,
+						copySetting.dest,
+						copySetting)
 				}
 			)
 		},

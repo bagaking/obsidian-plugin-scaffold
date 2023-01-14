@@ -40,3 +40,22 @@ test("copy plugin copies assets after successful builds", () => {
 
 	assert.equal(fs.readFileSync(dest, "utf8"), "asset");
 });
+
+test("copy plugin applies default source path when only dest is overridden", () => {
+	const workspace = fs.mkdtempSync(path.join(os.tmpdir(), "bagaking-copy-"));
+	const source = path.join(workspace, "statics");
+	const dest = path.join(workspace, "build", "statics");
+	fs.mkdirSync(source);
+	fs.writeFileSync(path.join(source, "icon.svg"), "<svg />");
+	const previousCwd = process.cwd();
+
+	try {
+		process.chdir(workspace);
+		const onEnd = setupCopyHook({ dest });
+		onEnd({ errors: [] });
+	} finally {
+		process.chdir(previousCwd);
+	}
+
+	assert.equal(fs.readFileSync(path.join(dest, "icon.svg"), "utf8"), "<svg />");
+});
