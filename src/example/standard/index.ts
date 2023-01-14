@@ -16,6 +16,7 @@ import MenuFn from "./codeblock/menu";
 import RadarFn from "./codeblock/radar";
 import EmbedFn from "./codeblock/embed";
 import TodoFn from "./codeblock/todo";
+import HighlightFn from "./codeblock/highlight";
 
 
 export default class StandardPlug extends BKPlugin {
@@ -70,7 +71,8 @@ export default class StandardPlug extends BKPlugin {
         this.registerMarkdownCodeBlockProcessor(...RadarFn())
         this.registerMarkdownCodeBlockProcessor(...EmbedFn(this.app))
         this.registerMarkdownCodeBlockProcessor(...MenuFn(this.app.vault))
-        this.registerMarkdownCodeBlockProcessor(...TodoFn())
+        this.registerMarkdownCodeBlockProcessor(...TodoFn(this.app))
+        this.registerMarkdownCodeBlockProcessor(...HighlightFn(this.app))
 
         // this.registerMarkdownCodeBlockProcessor("kh_ref", (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         //     const yml = YAML.parse(source)

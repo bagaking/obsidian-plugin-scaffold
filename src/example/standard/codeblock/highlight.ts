@@ -11,14 +11,14 @@ import {
 } from "../../../utils";
 
 
-export default function TodoFn(app: App): [string, (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>] {
+export default function HightlightFn(app: App): [string, (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => Promise<void>] {
     return [
-        "kh_todo",
+        "kh_highlight",
         async function (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) {
-            // const yml = YAML.parse(source)
             let {conf, content} = await readYmlFrontMatter(source, app)
             const option = createRenderContainerOptionByConf(conf)
-            option.label = "kh::todo"
+            console.log("=====", source, option, conf, content)
+            option.label = "kh::highlight"
             if (!!conf?.name) {
                 option.text = conf.name
                 option.width = conf.name.length * 6

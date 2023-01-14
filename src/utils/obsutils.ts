@@ -176,6 +176,37 @@ export async function readYmlConf(setting: string, obsApp?: App): Promise<any> {
     }
 }
 
+export async function readYmlFrontMatter(source: string, obsApp?: App): Promise<{ conf?: any, content: string }> {
+    const ret: { conf?: any, content: string } = {content: ""}
+
+    if (!source) return ret
+    const lines = source.split("\n")
+    let setting = "", l = 0
+    // console.log("--- lines", lines)
+    for (let inConf = false; l < lines.length; l++) {
+        const cl = lines[l].trimEnd()
+        if (!cl) continue
+        // console.log("---", inConf, l, cl, cl !== "---")
+        if (!inConf) {
+            if (cl !== "---") break
+            inConf = true
+            continue
+        }
+        if (cl === "---") {
+            l++
+            break
+        }
+        setting += cl + "\n"
+    }
+
+    for (; l < lines.length; l++) {
+        ret.content += lines[l] + "\n"
+    }
+    ret.conf = await readYmlConf(setting)
+    console.log("-- readYmlFrontMatter > setting:`", setting, "`, content:`", ret.content, "`, conf=", ret.conf)
+    return ret
+}
+
 export function createRenderContainerOptionByConf(
     conf: {
         style?: IStyleSet,
