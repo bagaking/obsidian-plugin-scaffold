@@ -1,13 +1,32 @@
 # Obsidian Plugin Scaffold
 
-This is a scaffolding scent to help you quickly create [Obsidian](https://obsidian.md) plugins
+This scaffold helps you quickly create and dogfood
+[Obsidian](https://obsidian.md) plugins.
 
-## 运行 DogFood 脚本
+## Setup
 
-通过执行 `npm run dogfood` 可以打包并将 plugin 配置到指定的 vault 中
+Install dependencies before running local checks:
 
-1. 将 Vault 的绝对路径配置到环境变量 OBS_PLUG_DOGFOOD_VAULT, 比如 `/User/me/vault`
-2. 手动将 "obsidian-plugin-scaffold-sample" 加到插件清单中，本例中对应的文件为 `/User/me/vault/.obsidian/community-plugins.json`
-3. 执行 `npm run dogfood`
-4. 刷新 Obsidian
+```sh
+npm install
+```
 
+## Scripts
+
+- `npm test` runs the Node test suite for scaffold helper scripts.
+- `npm run build` type-checks the plugin and writes the Obsidian release
+  assets to `build/`.
+- `npm run lint` runs ESLint over the TypeScript source files.
+- `npm run dogfood` type-checks, builds, and copies the `build/` output into
+  a local Obsidian vault.
+
+## Dogfood In Obsidian
+
+Use `npm run dogfood` to build the plugin and copy it into a local vault.
+
+1. Set `OBS_PLUG_DOGFOOD_VAULT` to the absolute path of the target vault, such
+   as the path to your local `ObsidianVault` directory.
+2. Add `obsidian-plugin-scaffold-sample` to the vault community plugin list,
+   for example `<vault>/.obsidian/community-plugins.json`.
+3. Run `npm run dogfood`.
+4. Reload Obsidian.
