@@ -36,6 +36,8 @@ reproducible. Use `npm ci` for local setup and CI.
 - `npm test` runs the Node test suite for scaffold helper scripts.
 - `npm run build` type-checks the plugin and writes the Obsidian release
   assets to `build/`.
+- `npm run pack:check` verifies that an npm dry-run tarball contains the
+  generated Obsidian release assets and required project files.
 - `npm run dogfood` type-checks, builds, and copies the `build/` output into
   a local Obsidian vault.
 
@@ -47,6 +49,7 @@ CI runs the reproducible checks that do not require a local Obsidian vault:
 npm ci
 npm test
 npm run build
+npm run pack:check
 ```
 
 `npm run lint` and `npm run dogfood` remain local checks for now. Lint still
