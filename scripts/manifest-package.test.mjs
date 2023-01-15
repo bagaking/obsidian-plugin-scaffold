@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
 
+import { checkPack, requiredPluginAssets } from "./check-pack.mjs";
+
 function readJson(path) {
 	return JSON.parse(fs.readFileSync(path, "utf8"));
 }
@@ -23,20 +25,38 @@ test("manifest metadata stays aligned with package metadata", () => {
 
 test("package checks cover required Obsidian release assets", () => {
 	const packageJson = readJson("package.json");
-	const packCheck = fs.readFileSync("scripts/check-pack.mjs", "utf8");
 
-	assert.equal(
-		packCheck.includes(`"${packageJson.main}"`) || packCheck.includes(`'${packageJson.main}'`),
-		true,
-		"pack:check should require the configured package main in the npm tarball",
-	);
-	assert.equal(packCheck.includes('"manifest.json"'), true, "pack:check should require the Obsidian manifest");
-	assert.equal(packCheck.includes('"versions.json"'), true, "pack:check should require Obsidian version metadata");
-	assert.equal(packCheck.includes('"styles.css"'), true, "pack:check should require the Obsidian stylesheet asset");
+	assert.deepEqual(requiredPluginAssets, [
+		packageJson.main,
+		"build/manifest.json",
+		"build/versions.json",
+		"build/styles.css",
+	]);
 
-	if (fs.existsSync("build")) {
-		assert.equal(fs.existsSync(packageJson.main), true, "existing build output should include the configured package main");
+	const missingStylesPack = {
+		files: [
+			{ path: packageJson.main },
+			{ path: "build/manifest.json" },
+			{ path: "build/versions.json" },
+			{ path: "README.md" },
+			{ path: "LICENSE" },
+			{ path: "manifest.json" },
+			{ path: "versions.json" },
+			{ path: "styles.css" },
+		],
+	};
+	let error;
+	try {
+		checkPack(missingStylesPack);
+	} catch (caught) {
+		error = caught;
 	}
+	assert.notEqual(error, undefined, "pack:check should reject a package without build/styles.css");
+	assert.equal(
+		error.message.includes("npm package is missing required files: build/styles.css"),
+		true,
+		"pack:check should fail when the Obsidian stylesheet asset is missing",
+	);
 });
 
 test("manifest keeps Obsidian-required fields populated", () => {

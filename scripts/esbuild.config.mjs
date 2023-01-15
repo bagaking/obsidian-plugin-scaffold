@@ -52,6 +52,7 @@ esbuild.build({
 	plugins: [
 		copy({from: "./manifest.json", dest: "./build/manifest.json"}),
 		copy({from: "./versions.json", dest: "./build/versions.json"}),
+		copy({from: "./styles.css", dest: "./build/styles.css"}),
 		copy({from: "./statics", dest: "./build/statics"}),
 
 	],
