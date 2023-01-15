@@ -1,0 +1,13 @@
+# Local/editor state
+.DS_Store
+.idea/
+.vscode/
+data.json
+
+# Dependencies and generated output
+node_modules/
+build/
+*.map
+
+# Scratch backups should not ship in npm tarballs.
+*.bak
