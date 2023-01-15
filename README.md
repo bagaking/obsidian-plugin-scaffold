@@ -3,6 +3,23 @@
 This scaffold helps you quickly create and dogfood
 [Obsidian](https://obsidian.md) plugins.
 
+## Current Scope
+
+This repository is a scaffold and sample plugin, not a finished end-user
+Obsidian plugin.
+
+- It provides the sample plugin source, build wiring, package metadata, and
+  dogfood copy script needed to create and test an Obsidian plugin locally.
+- The verified automated flow covers dependency installation, scaffold helper
+  tests, and production build output.
+- The dogfood flow builds the sample and copies generated assets into a vault
+  selected by the operator. It does not edit Obsidian settings automatically
+  beyond writing the plugin files.
+- Obsidian reload, plugin enablement, vault choice, and plugin-specific product
+  behavior remain manual/local checks.
+- `npm run lint` is kept as a debt visibility check and is not currently a
+  passing release gate.
+
 ## Setup
 
 Install dependencies before running local checks:
