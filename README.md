@@ -36,6 +36,12 @@ npm run build
 tracks existing baseline debt, and dogfood needs a vault path supplied by the
 operator.
 
+## Packaging
+
+Run `npm run build` before `npm pack` or `npm publish`. The npm package entry
+point is `build/main.js`, and the tarball should include the generated
+Obsidian release assets under `build/`.
+
 ## Known Existing Debt
 
 - `npm run lint` is a baseline visibility check for existing TypeScript lint

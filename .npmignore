@@ -6,7 +6,6 @@ data.json
 
 # Dependencies and generated output
 node_modules/
-build/
 *.map
 
 # Scratch backups should not ship in npm tarballs.

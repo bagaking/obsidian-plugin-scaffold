@@ -2,7 +2,7 @@
 	"name": "obsidian-plugin-scaffold-sample",
 	"version": "0.1.0",
 	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
-	"main": "main.js",
+	"main": "build/main.js",
 	"scripts": {
 		"dev": "node ./scripts/esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node ./scripts/esbuild.config.mjs production",
