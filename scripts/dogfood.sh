@@ -2,7 +2,7 @@
 set -ex
 
 # Set the dogfood vault
-# `export OBS_PLUG_DOGFOOD_VAULT=/Users/xxxxx`
+# `export OBS_PLUG_DOGFOOD_VAULT=$HOME/path/to/vault`
 if test "$(which json)x" == "x"
 then
 	echo "you should run \`npm i\` first to install the \`json\` package"
