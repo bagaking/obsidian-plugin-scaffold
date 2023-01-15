@@ -4,6 +4,11 @@
 .vscode/
 data.json
 
+# Repository maintainer files
+.github/
+.eslintignore
+.eslintrc
+
 # Dependencies and generated output
 node_modules/
 *.map
