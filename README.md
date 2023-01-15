@@ -8,13 +8,11 @@ This scaffold helps you quickly create and dogfood
 Install dependencies before running local checks:
 
 ```sh
-npm install
+npm ci
 ```
 
-This repository currently does not track `package-lock.json`; it is ignored by
-the repo. Dependency installation uses `package.json` as the source of truth.
-The CI workflow mirrors that policy by using `npm install` instead of
-`npm ci`.
+This repository tracks `package-lock.json` so dependency installation is
+reproducible. Use `npm ci` for local setup and CI.
 
 ## Scripts
 
@@ -29,7 +27,7 @@ The CI workflow mirrors that policy by using `npm install` instead of
 CI runs the reproducible checks that do not require a local Obsidian vault:
 
 ```sh
-npm install
+npm ci
 npm test
 npm run build
 ```
