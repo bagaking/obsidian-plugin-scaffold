@@ -9,6 +9,8 @@
 		"dogfood": "tsc -noEmit -skipLibCheck && node ./scripts/esbuild.config.mjs dogfood && sh ./scripts/dogfood.sh",
 		"version": "git add manifest.json versions.json",
 		"test": "node --test scripts/*.test.mjs",
+		"pack:dry-run": "npm pack --dry-run --json",
+		"pack:check": "node scripts/check-pack.mjs",
 		"lint": "eslint ./src/**/*.ts"
 	},
 	"keywords": [],
