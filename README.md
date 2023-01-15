@@ -52,3 +52,7 @@ Use `npm run dogfood` to build the plugin and copy it into a local vault.
    for example `<vault>/.obsidian/community-plugins.json`.
 3. Run `npm run dogfood`.
 4. Reload Obsidian.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
