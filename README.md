@@ -37,7 +37,8 @@ reproducible. Use `npm ci` for local setup and CI.
 - `npm run build` type-checks the plugin and writes the Obsidian release
   assets to `build/`.
 - `npm run pack:check` verifies that an npm dry-run tarball contains the
-  generated Obsidian release assets and required project files.
+  generated plugin entry, Obsidian manifest/version/style assets, and required
+  project files while excluding maintainer-only files.
 - `npm run dogfood` type-checks, builds, and copies the `build/` output into
   a local Obsidian vault.
 
@@ -59,8 +60,9 @@ operator.
 ## Packaging
 
 Run `npm run build` before `npm pack` or `npm publish`. The npm package entry
-point is `build/main.js`, and the tarball should include the generated
-Obsidian release assets under `build/`.
+point is `build/main.js`, and the tarball should include that generated plugin
+entry plus `manifest.json`, `versions.json`, `styles.css`, `README.md`, and
+`LICENSE`.
 
 ## Known Existing Debt
 

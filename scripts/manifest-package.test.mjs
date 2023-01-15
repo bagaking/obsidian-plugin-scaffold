@@ -21,7 +21,7 @@ test("manifest metadata stays aligned with package metadata", () => {
 	assert.equal(packageJson.main, "build/main.js", "package main should point at the built Obsidian plugin entry");
 });
 
-test("package checks cover the configured plugin entry", () => {
+test("package checks cover required Obsidian release assets", () => {
 	const packageJson = readJson("package.json");
 	const packCheck = fs.readFileSync("scripts/check-pack.mjs", "utf8");
 
@@ -30,6 +30,9 @@ test("package checks cover the configured plugin entry", () => {
 		true,
 		"pack:check should require the configured package main in the npm tarball",
 	);
+	assert.equal(packCheck.includes('"manifest.json"'), true, "pack:check should require the Obsidian manifest");
+	assert.equal(packCheck.includes('"versions.json"'), true, "pack:check should require Obsidian version metadata");
+	assert.equal(packCheck.includes('"styles.css"'), true, "pack:check should require the Obsidian stylesheet asset");
 
 	if (fs.existsSync("build")) {
 		assert.equal(fs.existsSync(packageJson.main), true, "existing build output should include the configured package main");

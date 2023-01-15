@@ -1,12 +1,21 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 
-const requiredPaths = [
+const requiredPluginAssets = [
 	"build/main.js",
 	"manifest.json",
 	"versions.json",
+	"styles.css",
+];
+
+const requiredProjectFiles = [
 	"README.md",
 	"LICENSE",
+];
+
+const requiredPaths = [
+	...requiredPluginAssets,
+	...requiredProjectFiles,
 ];
 
 const forbiddenPaths = [
@@ -36,4 +45,4 @@ const leakedPaths = packs[0].files
 assert.deepEqual(missing, [], `npm package is missing required files: ${missing.join(", ")}`);
 assert.deepEqual(leakedPaths, [], `npm package includes maintainer-only files: ${leakedPaths.join(", ")}`);
 
-console.log(`Package dry-run includes ${packs[0].entryCount} files and required Obsidian assets.`);
+console.log(`Package dry-run includes ${packs[0].entryCount} files and required Obsidian release assets.`);
