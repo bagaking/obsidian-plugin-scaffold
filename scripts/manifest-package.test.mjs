@@ -59,6 +59,16 @@ test("package checks cover required Obsidian release assets", () => {
 	);
 });
 
+test("npm version lifecycle updates Obsidian release metadata", () => {
+	const packageJson = readJson("package.json");
+
+	assert.equal(
+		packageJson.scripts.version.includes("scripts/version-bump.mjs"),
+		true,
+		"version script should run version-bump before staging Obsidian metadata",
+	);
+});
+
 test("manifest keeps Obsidian-required fields populated", () => {
 	const manifest = readJson("manifest.json");
 
